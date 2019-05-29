@@ -216,18 +216,37 @@ class Hm_Output_login extends Hm_Output_Module {
             if (!$single && count($settings) > 0) {
                 $changed = 1;
             }
-            return '<input type="hidden" id="unsaved_changes" value="'.$changed.'" />'.
-                '<input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
-                '<div class="confirm_logout"><div class="confirm_text">'.
-                $this->trans('Unsaved changes will be lost! Re-enter your password to save and exit.').' &nbsp;'.
-                '<a href="?page=save">'.$this->trans('More info').'</a></div>'.
-                '<input type="text" value="'.$this->html_safe($this->get('username', 'cypht_user')).'" autocomplete="username" style="display: none;"/>'.
-                '<label class="screen_reader" for="logout_password">'.$this->trans('Password').'</label>'.
-                '<input id="logout_password" autocomplete="current-password" name="password" class="save_settings_password" type="password" placeholder="'.$this->trans('Password').'" />'.
-                '<input class="save_settings" type="submit" name="save_and_logout" value="'.$this->trans('Save and Logout').'" />'.
-                '<input class="save_settings" id="logout_without_saving" type="submit" name="logout" value="'.$this->trans('Just Logout').'" />'.
-                '<input class="cancel_logout save_settings" type="button" value="'.$this->trans('Cancel').'" />'.
-                '</div>';
+            // Friend OS version doesn't need user to type in password
+            // TODO: Check config if we're running in Friend OS mode
+            if( 1 == 1 )
+            {
+            	return '<input type="hidden" id="unsaved_changes" value="'.$changed.'" />'.
+		            '<input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
+		            '<div class="confirm_logout"><div class="confirm_text">'.
+		            $this->trans('Unsaved changes will be lost! Re-enter your password to save and exit.').' &nbsp;'.
+		            '<a href="?page=save">'.$this->trans('More info').'</a></div>'.
+		            '<input type="text" value="'.$this->html_safe($this->get('username', 'cypht_user')).'" autocomplete="username" style="display: none;"/>'.
+		            '<label class="screen_reader" for="logout_password">'.$this->trans('Password').'</label>'.
+		            '<input id="logout_password" autocomplete="current-password" name="password" class="save_settings_password" type="password" placeholder="'.$this->trans('Password').'" />'.
+		            '<input class="save_settings" type="submit" name="save_and_logout" value="'.$this->trans('Save settings').'" />'.
+		            '</div>';
+            }
+            // Normal version of Cypht
+            else
+            {
+		        return '<input type="hidden" id="unsaved_changes" value="'.$changed.'" />'.
+		            '<input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
+		            '<div class="confirm_logout"><div class="confirm_text">'.
+		            $this->trans('Unsaved changes will be lost! Re-enter your password to save and exit.').' &nbsp;'.
+		            '<a href="?page=save">'.$this->trans('More info').'</a></div>'.
+		            '<input type="text" value="'.$this->html_safe($this->get('username', 'cypht_user')).'" autocomplete="username" style="display: none;"/>'.
+		            '<label class="screen_reader" for="logout_password">'.$this->trans('Password').'</label>'.
+		            '<input id="logout_password" autocomplete="current-password" name="password" class="save_settings_password" type="password" placeholder="'.$this->trans('Password').'" />'.
+		            '<input class="save_settings" type="submit" name="save_and_logout" value="'.$this->trans('Save and Logout').'" />'.
+		            '<input class="save_settings" id="logout_without_saving" type="submit" name="logout" value="'.$this->trans('Just Logout').'" />'.
+		            '<input class="cancel_logout save_settings" type="button" value="'.$this->trans('Cancel').'" />'.
+		            '</div>';
+		    }
         }
     }
 }
