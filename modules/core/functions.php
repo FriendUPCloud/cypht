@@ -356,35 +356,25 @@ function save_user_settings($handler, $form, $logout) {
     $user = $handler->session->get('username', false);
     $path = $handler->config->get('user_settings_dir', false);
 
-	// Friend OS does not need password here
-    if( 1 == 1 ){
-		if ($user && $path) {
-		    $handler->user_config->save($user, false);
-		    $handler->session->set('changed_settings', array());
-		    Hm_Msgs::add('Settings saved');
-		}
+    if ($handler->session->auth($user, $form['password'])) {
+        $pass = $form['password'];
     }
     else {
-		if ($handler->session->auth($user, $form['password'])) {
-		    $pass = $form['password'];
-		}
-		else {
-		    Hm_Msgs::add('ERRIncorrect password, could not save settings to the server');
-		    $pass = false;
-		}
-		if ($user && $path && $pass) {
-		    $handler->user_config->save($user, $pass);
-		    $handler->session->set('changed_settings', array());
-		    if ($logout) {
-		        $handler->session->destroy($handler->request);
-		        Hm_Msgs::add('Saved user data on logout');
-		        Hm_Msgs::add('Session destroyed on logout');
-		    }
-		    else {
-		        Hm_Msgs::add('Settings saved');
-		    }
-		}
-	}
+        Hm_Msgs::add('ERRIncorrect password, could not save settings to the server');
+        $pass = false;
+    }
+    if ($user && $path && $pass) {
+        $handler->user_config->save($user, $pass);
+        $handler->session->set('changed_settings', array());
+        if ($logout) {
+            $handler->session->destroy($handler->request);
+            Hm_Msgs::add('Saved user data on logout');
+            Hm_Msgs::add('Session destroyed on logout');
+        }
+        else {
+            Hm_Msgs::add('Settings saved');
+        }
+    }
 }}
 
 /**

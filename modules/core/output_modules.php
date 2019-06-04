@@ -1281,11 +1281,10 @@ class Hm_Output_save_form extends Hm_Output_Module {
             // Retrieve password from grandpa
             $res .= <<<EOL
             <script type="text/javascript">
-            	parent.postMessage({method:'getpassword'});
+            	parent.postMessage({method:'getpassword'},'*');
             	window.addEventListener('message',function(msg){
-            		console.log( 'We got a message!:', msg );
-            		if (msg.command == 'password') {
-            			ge('password').value = msg.password;
+            		if (msg.data.method == 'password') {
+            			document.getElementById('password').value = msg.data.password;
             		}
             	});
             </script>
