@@ -216,37 +216,18 @@ class Hm_Output_login extends Hm_Output_Module {
             if (!$single && count($settings) > 0) {
                 $changed = 1;
             }
-            // Friend OS version doesn't need user to type in password
-            // TODO: Check config if we're running in Friend OS mode
-            if( 1 == 1 )
-            {
-            	return '<input type="hidden" id="unsaved_changes" value="'.$changed.'" />'.
-		            '<input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
-		            '<div class="confirm_logout"><div class="confirm_text">'.
-		            $this->trans('Unsaved changes will be lost! Re-enter your password to save and exit.').' &nbsp;'.
-		            '<a href="?page=save">'.$this->trans('More info').'</a></div>'.
-		            '<input type="text" value="'.$this->html_safe($this->get('username', 'cypht_user')).'" autocomplete="username" style="display: none;"/>'.
-		            '<label class="screen_reader" for="logout_password">'.$this->trans('Password').'</label>'.
-		            '<input id="logout_password" autocomplete="current-password" name="password" class="save_settings_password" type="password" placeholder="'.$this->trans('Password').'" />'.
-		            '<input class="save_settings" type="submit" name="save_and_logout" value="'.$this->trans('Save settings').'" />'.
-		            '</div>';
-            }
-            // Normal version of Cypht
-            else
-            {
-		        return '<input type="hidden" id="unsaved_changes" value="'.$changed.'" />'.
-		            '<input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
-		            '<div class="confirm_logout"><div class="confirm_text">'.
-		            $this->trans('Unsaved changes will be lost! Re-enter your password to save and exit.').' &nbsp;'.
-		            '<a href="?page=save">'.$this->trans('More info').'</a></div>'.
-		            '<input type="text" value="'.$this->html_safe($this->get('username', 'cypht_user')).'" autocomplete="username" style="display: none;"/>'.
-		            '<label class="screen_reader" for="logout_password">'.$this->trans('Password').'</label>'.
-		            '<input id="logout_password" autocomplete="current-password" name="password" class="save_settings_password" type="password" placeholder="'.$this->trans('Password').'" />'.
-		            '<input class="save_settings" type="submit" name="save_and_logout" value="'.$this->trans('Save and Logout').'" />'.
-		            '<input class="save_settings" id="logout_without_saving" type="submit" name="logout" value="'.$this->trans('Just Logout').'" />'.
-		            '<input class="cancel_logout save_settings" type="button" value="'.$this->trans('Cancel').'" />'.
-		            '</div>';
-		    }
+            return '<input type="hidden" id="unsaved_changes" value="'.$changed.'" />'.
+                '<input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
+                '<div class="confirm_logout"><div class="confirm_text">'.
+                $this->trans('Unsaved changes will be lost! Re-enter your password to save and exit.').' &nbsp;'.
+                '<a href="?page=save">'.$this->trans('More info').'</a></div>'.
+                '<input type="text" value="'.$this->html_safe($this->get('username', 'cypht_user')).'" autocomplete="username" style="display: none;"/>'.
+                '<label class="screen_reader" for="logout_password">'.$this->trans('Password').'</label>'.
+                '<input id="logout_password" autocomplete="current-password" name="password" class="save_settings_password" type="password" placeholder="'.$this->trans('Password').'" />'.
+                '<input class="save_settings" type="submit" name="save_and_logout" value="'.$this->trans('Save and Logout').'" />'.
+                '<input class="save_settings" id="logout_without_saving" type="submit" name="logout" value="'.$this->trans('Just Logout').'" />'.
+                '<input class="cancel_logout save_settings" type="button" value="'.$this->trans('Cancel').'" />'.
+                '</div>';
         }
     }
 }
@@ -1287,16 +1268,41 @@ class Hm_Output_save_form extends Hm_Output_Module {
         else {
             $res .= '<li>'.$this->trans('No changes need to be saved').'</li>';
         }
-        $res .= '</ul></div><div class="save_perm_form"><form method="post">'.
+        
+        // The Friend OS way
+        if (1 == 1) {
+        	$res .= '</ul></div><div class="save_perm_form"><form method="post">'.
             '<input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
             '<input type="text" value="'.$this->html_safe($this->get('username', 'cypht_user')).'" autocomplete="username" style="display: none;"/>'.
-            '<label class="screen_reader" for="password">Password</label><input required id="password" '.
-            'name="password" autocomplete="current-password" class="save_settings_password" type="password" placeholder="'.$this->trans('Password').'" />'.
+            '<input id="password" '.
+            'name="password" class="save_settings_password" type="hidden" value="" />'.
             '<input class="save_settings" type="submit" name="save_settings_permanently" value="'.$this->trans('Save').'" />'.
-            '<input class="save_settings" type="submit" name="save_settings_permanently_then_logout" value="'.$this->trans('Save and Logout').'" />'.
-            '</form><form method="post"><input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
-            '<input class="save_settings" type="submit" name="logout" value="'.$this->trans('Just Logout').'" />'.
             '</form></div>';
+            // Retrieve password from grandpa
+            $res .= <<<EOL
+            <script type="text/javascript">
+            	parent.postMessage({method:'getpassword'});
+            	window.addEventListener('message',function(msg){
+            		console.log( 'We got a message!:', msg );
+            		if (msg.command == 'password') {
+            			ge('password').value = msg.password;
+            		}
+            	});
+            </script>
+EOL;
+        }
+        else {
+			$res .= '</ul></div><div class="save_perm_form"><form method="post">'.
+			'<input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
+			'<input type="text" value="'.$this->html_safe($this->get('username', 'cypht_user')).'" autocomplete="username" style="display: none;"/>'.
+			'<label class="screen_reader" for="password">Password</label><input required id="password" '.
+			'name="password" autocomplete="current-password" class="save_settings_password" type="password" placeholder="'.$this->trans('Password').'" />'.
+			'<input class="save_settings" type="submit" name="save_settings_permanently" value="'.$this->trans('Save').'" />'.
+			'<input class="save_settings" type="submit" name="save_settings_permanently_then_logout" value="'.$this->trans('Save and Logout').'" />'.
+			'</form><form method="post"><input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
+			'<input class="save_settings" type="submit" name="logout" value="'.$this->trans('Just Logout').'" />'.
+			'</form></div>';
+		}
 
         $res .= '</div>';
         return $res;

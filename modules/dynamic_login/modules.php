@@ -132,19 +132,35 @@ class Hm_Output_dynamic_login extends Hm_Output_login {
             return $res;
         }
         else {
-            $settings = $this->get('changed_settings', array());
-            return '<input type="hidden" id="unsaved_changes" value="'.
-                (!empty($settings) ? '1' : '0').'" />'.
-                '<input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
-                '<div class="confirm_logout"><div class="confirm_text">'.
-                $this->trans('Unsaved changes will be lost! Re-enter your password to save and exit.').' &nbsp;'.
-                '<a href="?page=save">'.$this->trans('More info').'</a></div>'.
-                '<label class="screen_reader" for="logout_password">'.$this->trans('Password').'</label>'.
-                '<input id="logout_password" name="password" class="save_settings_password" type="password" placeholder="'.$this->trans('Password').'" />'.
-                '<input class="save_settings" type="submit" name="save_and_logout" value="'.$this->trans('Save and Logout').'" />'.
-                '<input class="save_settings" id="logout_without_saving" type="submit" name="logout" value="'.$this->trans('Just Logout').'" />'.
-                '<input class="cancel_logout save_settings" type="button" value="'.$this->trans('Cancel').'" />'.
-                '</div>';
+        	// TODO: Check Friend OS config whether to use this code instead of the other
+        	if( 1 == 1 ) {
+        		$settings = $this->get('changed_settings', array());
+		        return '<input type="hidden" id="unsaved_changes" value="'.
+		            (!empty($settings) ? '1' : '0').'" />'.
+		            '<input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
+		            '<div class="confirm_logout"><div class="confirm_text">'.
+		            $this->trans('Unsaved changes will be lost! Hit "Save Now" to save your settings.').' &nbsp;'.
+		            '<a href="?page=save">'.$this->trans('More info').'</a></div>'.
+		            '<input id="logout_password" name="password" class="save_settings_password" type="hidden" placeholder="'.$this->trans('Password').'" value="' . $this->html_safe($this->get('password', 'cypht_user')) . '"/>'.
+		            '<input class="save_settings" type="submit" name="save_and_logout" value="'.$this->trans('Save now').'" />'.
+		            '<input class="cancel_logout save_settings" type="button" value="'.$this->trans('Cancel').'" />'.
+		            '</div>';
+        	}
+        	else {
+		        $settings = $this->get('changed_settings', array());
+		        return '<input type="hidden" id="unsaved_changes" value="'.
+		            (!empty($settings) ? '1' : '0').'" />'.
+		            '<input type="hidden" name="hm_page_key" value="'.$this->html_safe(Hm_Request_Key::generate()).'" />'.
+		            '<div class="confirm_logout"><div class="confirm_text">'.
+		            $this->trans('Unsaved changes will be lost! Re-enter your password to save and exit.').' &nbsp;'.
+		            '<a href="?page=save">'.$this->trans('More info').'</a></div>'.
+		            '<label class="screen_reader" for="logout_password">'.$this->trans('Password').'</label>'.
+		            '<input id="logout_password" name="password" class="save_settings_password" type="password" placeholder="'.$this->trans('Password').'" />'.
+		            '<input class="save_settings" type="submit" name="save_and_logout" value="'.$this->trans('Save and Logout').'" />'.
+		            '<input class="save_settings" id="logout_without_saving" type="submit" name="logout" value="'.$this->trans('Just Logout').'" />'.
+		            '<input class="cancel_logout save_settings" type="button" value="'.$this->trans('Cancel').'" />'.
+		            '</div>';
+		    }
         }
     }
 }
