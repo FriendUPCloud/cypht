@@ -23,4 +23,82 @@ main.content_cell
 	overflow: hidden;
 }
 
+/* Friend OS extensions ----------------------------------------------------- */
+
+.ConfirmDialog
+{
+	position: absolute;
+	top: 0;
+	left: calc(50% - 200px);
+	background: white;
+	border-radius: 0 0 3px 3px;
+	box-shadow: 0px 1px 4px rgba(0,0,0,0.5);
+	transition: height,opacity 0.25s,0.25s;
+	overflow: hidden;
+	width: 400px;
+}
+
+.ConfirmDialog > .Title
+{
+	font-weight: bold;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 30px;
+	text-align: center;
+	color: #333333;
+	line-height: 30px;
+	border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+
+.ConfirmDialog > .Text
+{
+	position: absolute;
+	top: 30px;
+	left: 0;
+	width: 100%;
+	height: calc(100% - 60px);
+	box-sizing: border-box;
+	padding: 10px;
+	color: #000000;
+}
+
+.ConfirmDialog > .Buttons
+{
+	position: absolute;
+	top: calc(100% - 30px);
+	left: 0;
+	width: 100%;
+	height: 30px;
+	border-top: 1px solid rgba(0,0,0,0.3);
+}
+
+.ConfirmDialog > .Buttons > button
+{
+	width: 50%;
+	float: left;
+	height: 30px;
+	margin: 0;
+	border-width: 1px;
+}
+
+.ConfirmDialog.Hidden
+{
+	height: 0;
+	opacity: 0;
+}
+
+.ConfirmDialog.Opening
+{
+	height: 200px;
+	opacity 1;
+}
+
+.ConfirmDialog.Open
+{
+	height: 200px;
+	opacity 1;
+}
+
 

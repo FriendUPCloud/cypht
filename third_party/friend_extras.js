@@ -34,14 +34,17 @@ function PopConfirm (title, text, callbackOk, okText, cancelText) {
 		}, 250 );
 	}
 	var c = document.createElement( 'button' );
-	o.innerHTML = cancelText;
-	o.onclick = function (e) {
+	c.innerHTML = cancelText;
+	c.onclick = function (e) {
 		d.classList.add( 'Hidden' );
 		d.classList.remove( 'Open' );
 		setTimeout( function() {
 			document.body.removeChild( d );
 		}, 250 );
 	}
+	b.appendChild( o );
+	b.appendChild( c );
+	d.appendChild( b );
 	
 	// Add it
 	document.body.appendChild( d );
