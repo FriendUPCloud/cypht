@@ -1,0 +1,26 @@
+/* Main GUI */
+
+nav.folder_cell
+{
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	width: 250px;
+	max-width: 250px;
+	height: 100%;
+	background-color: #F4F4F4 !important;
+}
+
+main.content_cell
+{
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 250px;
+	width: calc(100% - 250px);
+	height: 100%;
+	overflow: hidden;
+}
+
+
