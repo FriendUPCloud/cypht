@@ -369,6 +369,9 @@ class Hm_Output_content_start extends Hm_Output_Module {
                 '" alt="'.$this->trans('Unsaved changes').
                 '" class="unsaved_reminder" /></a>';
         }
+        // Friend OS addendum
+        $res .= '<script src="friend/friend_extras.js" type="text/javascript"></script>';
+        $res .= '<link rel="stylesheet" href="friend/friend_ui_overrides.css"/>';
         return $res;
     }
 }
@@ -528,10 +531,10 @@ class Hm_Output_js_data extends Hm_Output_Module {
             format_data_sources($this->get('data_sources', array()), $this);
 
         if (!$this->get('disable_delete_prompt')) {
-            $res .= 'var hm_delete_prompt = function() { return confirm("'.$this->trans('Are you sure?').'"); };';
+            $res .= 'var hm_delete_prompt = function( cbk ) { Confirm("'.$this->trans('Are you sure?').'", false, cbk); };';
         }
         else {
-            $res .= 'var hm_delete_prompt = function() { return true; };';
+            $res .= 'var hm_delete_prompt = function( cbk ) { cbk(); };';
         }
         $res .= '</script>';
         return $res;

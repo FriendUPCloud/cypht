@@ -57,36 +57,35 @@ var pop3_forget_action = function(event) {
 };
 
 var pop3_delete_action = function(event) {
-    if (!hm_delete_prompt()) {
-        return false;
-    }
-    event.preventDefault();
-    Hm_Notices.hide(true);
-    var form = $(this).parent();
-    Hm_Ajax.request(
-        form.serializeArray(),
-        function(res) {
-            if (res.deleted_server_id > -1 ) {
-                form.parent().remove();
-                Hm_Utils.set_unsaved_changes(1);
-                Hm_Folders.reload_folders(true);
-                var label = $('.server_count', $('.pop3_server_setup')).text();
-                if (label) {
-                    var parts = label.split(' ');
-                    var count = parts[0]*1;
-                    if (count > 0) {
-                        count--;
-                    }
-                    else {
-                        count = 0;
-                    }
-                    $('.server_count', $('.pop3_server_setup')).text(count+' '+parts[1]);
+    hm_delete_prompt( function() {
+		event.preventDefault();
+		Hm_Notices.hide(true);
+		var form = $(this).parent();
+		Hm_Ajax.request(
+		    form.serializeArray(),
+		    function(res) {
+		        if (res.deleted_server_id > -1 ) {
+		            form.parent().remove();
+		            Hm_Utils.set_unsaved_changes(1);
+		            Hm_Folders.reload_folders(true);
+		            var label = $('.server_count', $('.pop3_server_setup')).text();
+		            if (label) {
+		                var parts = label.split(' ');
+		                var count = parts[0]*1;
+		                if (count > 0) {
+		                    count--;
+		                }
+		                else {
+		                    count = 0;
+		                }
+		                $('.server_count', $('.pop3_server_setup')).text(count+' '+parts[1]);
 
-                }
-            }
-        },
-        {'pop3_delete': 1}
-    );
+		            }
+		        }
+		    },
+		    {'pop3_delete': 1}
+		);
+	}
 };
 
 var display_pop3_mailbox = function(res) {

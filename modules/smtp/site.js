@@ -59,24 +59,23 @@ var smtp_forget_action = function(event) {
 };
 
 var smtp_delete_action = function(event) {
-    if (!hm_delete_prompt()) {
-        return false;
-    }
-    event.preventDefault();
-    Hm_Notices.hide(true);
-    var form = $(this).parent();
-    Hm_Ajax.request(
-        form.serializeArray(),
-        function(res) {
-            Hm_Notices.show(res.router_user_msgs);
-            if (res.deleted_server_id > -1 ) {
-                form.parent().remove();
-                Hm_Utils.set_unsaved_changes(1);
-                Hm_Folders.reload_folders(true);
-            }
-        },
-        {'smtp_delete': 1}
-    );
+    hm_delete_prompt( function() {
+		event.preventDefault();
+		Hm_Notices.hide(true);
+		var form = $(this).parent();
+		Hm_Ajax.request(
+		    form.serializeArray(),
+		    function(res) {
+		        Hm_Notices.show(res.router_user_msgs);
+		        if (res.deleted_server_id > -1 ) {
+		            form.parent().remove();
+		            Hm_Utils.set_unsaved_changes(1);
+		            Hm_Folders.reload_folders(true);
+		        }
+		    },
+		    {'smtp_delete': 1}
+		);
+	} );
 };
 
 var smtp_delete_draft = function(id) {

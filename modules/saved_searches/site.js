@@ -16,19 +16,17 @@ var update_search = function(event) {
 };
 
 var delete_search = function(event) {
-    if (!hm_delete_prompt()) {
-        return false;
-    }
-    var name = $('.search_name').val();
-    event.preventDefault();
-    if (name.length) {
-        Hm_Ajax.request(
-            [{'name': 'hm_ajax_hook', 'value': 'ajax_delete_search'},
-            {'name': 'search_name', 'value': name}],
-            search_delete_results
-        );
-    }
-    return false;
+    hm_delete_prompt( function() {
+		var name = $('.search_name').val();
+		event.preventDefault();
+		if (name.length) {
+		    Hm_Ajax.request(
+		        [{'name': 'hm_ajax_hook', 'value': 'ajax_delete_search'},
+		        {'name': 'search_name', 'value': name}],
+		        search_delete_results
+		    );
+		}
+	} );
 };
 
 var save_search = function(event) {
