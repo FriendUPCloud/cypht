@@ -531,7 +531,7 @@ class Hm_Output_js_data extends Hm_Output_Module {
             format_data_sources($this->get('data_sources', array()), $this);
 
         if (!$this->get('disable_delete_prompt')) {
-            $res .= 'var hm_delete_prompt = function( cbk ) { Confirm("'.$this->trans('Are you sure?').'", false, cbk); };';
+            $res .= 'var hm_delete_prompt = function( cbk ) { PopConfirm("'.$this->trans('Are you sure?').'", false, cbk); };';
         }
         else {
             $res .= 'var hm_delete_prompt = function( cbk ) { cbk(); };';
