@@ -59,3 +59,13 @@ function PopConfirm (title, text, callbackOk, okText, cancelText) {
 	}, 50 );
 }
 
+// Tell parent that we loaded
+parent.postMessage( {
+	command: 'cypht_loaded'
+}, '*' );
+window.addEventListener( 'unload', function()
+{
+	parent.postMessage( {
+		command: 'cypht_loading'
+	}, '*' );
+} );
